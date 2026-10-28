@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hal Jaza-u al-Ihsani Illal Ihsan - Sticky & Scroller Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .arabic-font { font-family: 'Amiri', serif; }
+    .premium-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    .clean-header {
+      background: linear-gradient(135deg, #043e2e 0%, #065f46 50%, #047857 100%);
+      box-shadow: 0 15px 35px -5px rgba(6, 78, 59, 0.25);
+    }
+    .sticky-top-section {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: linear-gradient(135deg, rgba(248, 250, 252, 0.98) 0%, rgba(237, 242, 247, 0.98) 100%);
+      backdrop-filter: blur(12px);
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #e2e8f0;
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #059669;
+      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+    }
+    .tab-active {
+      background: #065f46;
+      color: #ffffff;
+      box-shadow: 0 4px 14px 0 rgba(6, 95, 70, 0.3);
+    }
+    .shrine-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    .shrine-card:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateY(-2px);
+      border-color: rgba(251, 191, 36, 0.8);
+    }
+    .shrine-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0f2b20 0%, #1a4d39 100%);
+      border: 2px solid #fbbf24;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body class="custom-scrollbar pb-10">
+
+  <div class="w-full px-2 sm:px-4 md:px-6">
+
+    <!-- Sticky Top Section (Header + Cards + Chart + Tabs Bar all freeze together) -->
+    <div class="sticky-top-section">
+      
+      <!-- Header Block -->
+      <div class="clean-header rounded-3xl p-4 sm:p-5 mb-3 text-white relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- Sacred Sites 7 Alignment -->
+        <div class="mb-3 border-b border-emerald-500/30 pb-3">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold tracking-widest text-emerald-300 uppercase flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+              Sacred Shrines & Holy Sites Alignment
+            </span>
+            <span class="text-[10px] text-amber-300 font-semibold bg-amber-950/40 border border-amber-400/30 px-2 py-0.5 rounded-full">
+              7 Blessed Destinations
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+            <div class="shrine-card rounded-2xl p-2 text-center flex flex-col items-center justify-center">
+              <div class="shrine-badge mb-1">
+                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 4h-4v2h4v2h-4v2h4v2h-4v2h4v1H6V5h12v2z"/></svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Ka'aba</span>
+              <span class="text-[8px] text-amber-200 opacity-80 block">Makkah Mukarramah</span>
+            </div>
+
+            <div class="shrine-card rounded-2xl p-2 text-center flex flex-col items-center justify-center">
+              <div class="shrine-badge mb-1" style="border-color: #34d399;">
+                <svg class="w-5 h-5 text-emerald-400 fill-current" viewBox="0 0 24 24"><path d="M12 2L9 7h6l-3-5zm0 6c-3.31 0-6 2.69-6 6v7h12v-7c0-3.31-2.69-6-6-6zm0 2c1.66 0 3 1.34 3 3h-6c0-1.66 1.34-3 3-3z"/></svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Masjid-an-Nabawi</span>
+              <span class="text-[8px] text-emerald-200 opacity-80 block">Madinah Munawwarah</span>
+            </div>
+
+            <div class="shrine-card rounded-2xl p-2 text-center flex flex-col items-center justify-center">
+              <div class="shrine-badge mb-1">
+                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h14v-8h3L12 3zm0 4.5l5 4.5v6H7v-6l5-4.5z"/></svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Imam Ali (AS)</span>
+              <span class="text-[8px] text-amber-200 opacity-80 block">Najaf al-Ashraf</span>
+            </div>
+
+            <div class="shrine-card rounded-2xl p-2 text-center flex flex-col items-center justify-center">
+              <div class="shrine-badge mb-1">
+                <svg class="w-5 h-5 text-rose-400 fill-current" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Imam Hussain (AS)</span>
+              <span class="text-[8px] text-amber-200 opacity-80 block">Karbala Mu'alla</span>
+            </div>
+
+            <div class="shrine-card rounded-2xl p-2 text-center flex flex-col items-center justify-center">
+              <div class="shrine-badge mb-1" style="border-color: #34d399;">
+                <svg class="w-5 h-5 text-emerald-400 fill-current" viewBox="0 0 24 24"><path d="M12 2L4 9v11h16V9l-8-7zm0 4.5l5 4.5v6.5H7v-6.5l5-4.5z"/></svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Kadhimayn Shrines</span>
+              <span class="text-[8px] text-emerald-200 opacity-80 block">Kadhimiya, Baghdad</span>
+            </div>
+
+            <div class="shrine-card rounded-2xl p-2 text-center flex flex-col items-center justify-center">
+              <div class="shrine-badge mb-1">
+                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3 6 6 1-4.5 4.5 1 6.5-5.5-3-5.5 3 1-6.5L3 9l6-1 3-6z"/></svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Samarra Shrines</span>
+              <span class="text-[8px] text-amber-200 opacity-80 block">Samarra, Iraq</span>
+            </div>
+
+            <div class="shrine-card rounded-2xl p-2 text-center flex flex-col items-center justify-center">
+              <div class="shrine-badge mb-1">
+                <svg class="w-5 h-5 text-amber-300 fill-current" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h14v-8h3L12 3zm0 4.5l5 4.5v6H7v-6l5-4.5z"/></svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Imam Reza (AS)</span>
+              <span class="text-[8px] text-amber-200 opacity-80 block">Mashhad al-Riza</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Title Section -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-3 relative z-10">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-400/30 text-emerald-300 text-[10px] font-semibold uppercase mb-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Live Transparency Portal
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">Hal Jaza'u al-Ihsani Illal Ihsan</h1>
+            <p class="arabic-font text-base text-amber-300 opacity-95">هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ</p>
+          </div>
+
+          <button onclick="openWhatsappModal()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-lg border border-emerald-400/30 transition-all">
+            <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+            <span>WhatsApp Report</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Side-by-Side: Cards (Left) + Chart (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 mb-3">
+        <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2.5">
+          <div class="premium-card rounded-2xl p-3 flex justify-between items-center">
+            <div>
+              <span class="text-[9px] font-bold text-slate-500 uppercase">Total Collected</span>
+              <div class="text-base font-extrabold text-slate-800" id="stat-total-collected">₹0</div>
+            </div>
+            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+          </div>
+          <div class="premium-card rounded-2xl p-3 flex justify-between items-center">
+            <div>
+              <span class="text-[9px] font-bold text-slate-500 uppercase">Total Disbursed</span>
+              <div class="text-base font-extrabold text-slate-800" id="stat-total-disbursed">₹0</div>
+            </div>
+            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+          </div>
+          <div class="premium-card rounded-2xl p-3 flex justify-between items-center">
+            <div>
+              <span class="text-[9px] font-bold text-slate-500 uppercase">Net Balance</span>
+              <div class="text-base font-extrabold text-emerald-700" id="stat-net-balance">₹0</div>
+            </div>
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 premium-card rounded-2xl p-3 flex flex-col justify-between">
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="text-[11px] font-bold text-slate-700 uppercase">Monthly Contributions Trend</h4>
+            <span class="text-[9px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Live Analytics</span>
+          </div>
+          <div class="h-24 w-full">
+            <canvas id="monthlyChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls Bar (Tabs + Search) -->
+      <div class="premium-card rounded-2xl p-2.5 flex flex-col md:flex-row items-center justify-between gap-3 shadow-sm">
+        <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 w-full md:w-auto">
+          <button id="tab-contrib" onclick="switchTab('contrib')" class="flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 tab-active">
+            Contributions Received
+          </button>
+          <button id="tab-disburse" onclick="switchTab('disburse')" class="flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition-all duration-300">
+            Help Given (Disbursals)
+          </button>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center gap-2 w-full md:w-auto">
+          <div class="relative w-full sm:w-56">
+            <input type="text" id="searchInput" oninput="renderTable()" placeholder="Search records..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-1.5 pl-8 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-600">
+            <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+          <select id="monthFilter" onchange="renderTable()" class="w-full sm:w-auto bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600">
+            <option value="ALL">All Months</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Table Container with Internal Scrollbar (Fixed height scroll block) -->
+    <div class="premium-card rounded-2xl overflow-hidden shadow-md mt-3">
+      <div class="p-3 bg-slate-100/90 border-b border-slate-200 flex justify-between items-center">
+        <h3 id="table-title" class="text-xs font-bold text-emerald-800 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-600"></span> Contribution Records (Live from Google Sheet)
+        </h3>
+        <span id="record-count" class="text-[11px] text-slate-700 font-bold bg-white px-2.5 py-0.5 rounded-full border border-slate-300">0 records</span>
+      </div>
+
+      <!-- Internal Scrollable Block -->
+      <div class="overflow-x-auto custom-scrollbar max-h-[420px] overflow-y-auto">
+        <table class="w-full text-left text-xs text-slate-800">
+          <thead id="table-head" class="text-[10px] font-bold uppercase bg-slate-200/95 text-slate-700 border-b border-slate-300 sticky top-0 z-20"></thead>
+          <tbody id="table-body" class="divide-y divide-slate-200"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WhatsApp Modal -->
+  <div id="whatsappModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="premium-card max-w-lg w-full rounded-3xl p-6 relative border border-slate-200 shadow-2xl bg-white">
+      <button onclick="closeWhatsappModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold">✕</button>
+      <h3 class="text-xl font-bold text-emerald-800 mb-2">WhatsApp Transparency Report</h3>
+      <p class="text-xs text-slate-500 mb-4">Copy formatted text below:</p>
+      <textarea id="whatsappText" rows="8" readonly class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-700 font-mono custom-scrollbar mb-4"></textarea>
+      <div class="flex gap-3">
+        <button onclick="copyWhatsappText()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-xl font-bold text-sm shadow-md">Copy Text</button>
+        <button onclick="closeWhatsappModal()" class="px-5 bg-slate-200 hover:bg-slate-300 text-slate-700 py-2 rounded-xl font-bold text-sm">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const URL_CONTRIBUTIONS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTRPbOeifJU0NdFl_tNolIMeB7SDYbANFSdDKsB2SPpC8fv4d7fcJg8P-SrAqPx8xkOnPabhN3sDgtC/pub?gid=0&single=true&output=csv";
+    const URL_DISBURSALS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTRPbOeifJU0NdFl_tNolIMeB7SDYbANFSdDKsB2SPpC8fv4d7fcJg8P-SrAqPx8xkOnPabhN3sDgtC/pub?gid=1&single=true&output=csv";
+
+    let rawContribData = [], rawDisburseData = [], currentTab = 'contrib', chartInstance = null;
+
+    async function loadData() {
+      try {
+        Papa.parse(URL_CONTRIBUTIONS, {
+          download: true, header: true, skipEmptyLines: true,
+          complete: function(results) {
+            rawContribData = results.data;
+            calculateStats();
+            populateMonthFilter();
+            renderChart();
+            renderTable();
+          }
+        });
+
+        Papa.parse(URL_DISBURSALS, {
+          download: true, header: true, skipEmptyLines: true,
+          complete: function(results) {
+            rawDisburseData = results.data;
+            calculateStats();
+            if(currentTab === 'disburse') renderTable();
+          }
+        });
+      } catch (e) {
+        console.error("Error loading CSVs:", e);
+      }
+    }
+
+    function calculateStats() {
+      let totalContrib = 0, totalDisbursed = 0;
+      rawContribData.forEach(row => {
+        let amt = parseFloat(cleanAmount(row['AMOUNT'] || row['Amount'] || 0));
+        if (!isNaN(amt)) totalContrib += amt;
+      });
+      rawDisburseData.forEach(row => {
+        let amt = parseFloat(cleanAmount(row['Amount'] || row['AMOUNT'] || 0));
+        if (!isNaN(amt)) totalDisbursed += amt;
+      });
+      document.getElementById('stat-total-collected').innerText = '₹' + totalContrib.toLocaleString('en-IN');
+      document.getElementById('stat-total-disbursed').innerText = '₹' + totalDisbursed.toLocaleString('en-IN');
+      document.getElementById('stat-net-balance').innerText = '₹' + (totalContrib - totalDisbursed).toLocaleString('en-IN');
+    }
+
+    function cleanAmount(val) { return val ? val.toString().replace(/[^0-9.]/g, '') : 0; }
+
+    function populateMonthFilter() {
+      const months = new Set();
+      rawContribData.forEach(r => { let m = r['MONTH'] || r['Month']; if (m) months.add(m); });
+      rawDisburseData.forEach(r => { let m = r['Date/Month'] || r['Month'] || r['MONTH']; if (m) months.add(m); });
+      const select = document.getElementById('monthFilter');
+      select.innerHTML = '<option value="ALL">All Months</option>';
+      months.forEach(m => { select.innerHTML += `<option value="${m}">${m}</option>`; });
+    }
+
+    function renderChart() {
+      const monthlyMap = {};
+      rawContribData.forEach(r => {
+        let m = r['MONTH'] || r['Month'];
+        let a = parseFloat(cleanAmount(r['AMOUNT'] || r['Amount']));
+        if(m && !isNaN(a)) monthlyMap[m] = (monthlyMap[m] || 0) + a;
+      });
+
+      const ctx = document.getElementById('monthlyChart').getContext('2d');
+      if(chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(monthlyMap),
+          datasets: [{ label: 'Contributions (₹)', data: Object.values(monthlyMap), backgroundColor: '#059669', borderRadius: 6 }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+            y: { grid: { color: 'rgba(226, 232, 240, 0.6)' }, ticks: { font: { size: 9 } } }
+          }
+        }
+      });
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.getElementById('tab-contrib').className = tab === 'contrib' ? 'flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 tab-active' : 'flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition-all duration-300';
+      document.getElementById('tab-disburse').className = tab === 'disburse' ? 'flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 tab-active' : 'flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition-all duration-300';
+      
+      document.getElementById('table-title').innerHTML = tab === 'contrib' ? '<span class="w-2 h-2 rounded-full bg-emerald-600"></span> Contribution Records (Live from Google Sheet)' : '<span class="w-2 h-2 rounded-full bg-rose-600"></span> Help Disbursal Records (Live from Google Sheet)';
+      renderTable();
+    }
+
+    function renderTable() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const monthSel = document.getElementById('monthFilter').value;
+      const thead = document.getElementById('table-head');
+      const tbody = document.getElementById('table-body');
+      let data = currentTab === 'contrib' ? rawContribData : rawDisburseData;
+      
+      let filtered = data.filter(row => {
+        let matchesQuery = Object.values(row).some(v => v && v.toString().toLowerCase().includes(query));
+        let mVal = row['MONTH'] || row['Month'] || row['Date/Month'] || '';
+        let matchesMonth = (monthSel === 'ALL') || (mVal === monthSel);
+        return matchesQuery && matchesMonth;
+      });
+
+      document.getElementById('record-count').innerText = `${filtered.length} records`;
+
+      if (currentTab === 'contrib') {
+        thead.innerHTML = `<tr><th class="p-3">S.No</th><th class="p-3">Contributor Name</th><th class="p-3">Month</th><th class="p-3">Amount</th><th class="p-3">Status</th></tr>`;
+        tbody.innerHTML = filtered.map((r, i) => {
+          let amt = parseFloat(cleanAmount(r['AMOUNT'] || r['Amount'] || 0));
+          let statusBadge = amt > 0 
+            ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">Received</span>`
+            : `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-300">Pending</span>`;
+
+          return `
+            <tr class="hover:bg-emerald-50/50 transition-colors">
+              <td class="p-3 text-slate-500 font-mono font-bold">${i + 1}</td>
+              <td class="p-3 font-bold text-slate-900">${r['CONTRIBUTOR NAME'] || r['Contributor Name'] || '-'}</td>
+              <td class="p-3 font-medium text-slate-700">${r['MONTH'] || r['Month'] || '-'}</td>
+              <td class="p-3 font-extrabold ${amt > 0 ? 'text-emerald-700' : 'text-slate-400'}">₹${amt.toLocaleString('en-IN')}</td>
+              <td class="p-3">${statusBadge}</td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        thead.innerHTML = `<tr><th class="p-3">S.No</th><th class="p-3">Recipient Name</th><th class="p-3">Reason</th><th class="p-3">Referred By</th><th class="p-3">Date/Month</th><th class="p-3">Amount</th><th class="p-3">Mode</th><th class="p-3">Transaction / Ref ID</th></tr>`;
+        tbody.innerHTML = filtered.map((r, i) => `
+          <tr class="hover:bg-rose-50/50 transition-colors">
+            <td class="p-3 text-slate-500 font-mono font-bold">${i + 1}</td>
+            <td class="p-3 font-bold text-slate-900">${r['Recipient Name'] || r['RECIPIENT NAME'] || '-'}</td>
+            <td class="p-3 text-slate-700 font-medium">${r['Reason'] || r['REASON'] || '-'}</td>
+            <td class="p-3 text-slate-700">${r['Referred By'] || r['REFERRED BY'] || '-'}</td>
+            <td class="p-3 text-slate-700">${r['Date/Month'] || r['Month'] || '-'}</td>
+            <td class="p-3 font-extrabold text-rose-600">₹${parseFloat(cleanAmount(r['Amount'] || r['AMOUNT'])).toLocaleString('en-IN')}</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-200 text-slate-800 border border-slate-300">${r['Mode of Payment'] || 'Online'}</span></td>
+            <td class="p-3 font-mono text-xs text-slate-600">${r['Transaction ID / Ref'] || r['Transaction Id'] || '-'}</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function openWhatsappModal() {
+      let text = `*Hal Jaza'u al-Ihsani Illal Ihsan*\n*Community Transparency Report*\n\n`;
+      text += `💰 *Total Contributions:* ${document.getElementById('stat-total-collected').innerText}\n`;
+      text += `🤝 *Total Disbursed:* ${document.getElementById('stat-total-disbursed').innerText}\n`;
+      text += `⚖️ *Net Available Balance:* ${document.getElementById('stat-net-balance').innerText}\n\n`;
+      text += `*JazakAllah Khair for your support!*`;
+      document.getElementById('whatsappText').value = text;
+      document.getElementById('whatsappModal').classList.remove('hidden');
+    }
+
+    function closeWhatsappModal() { document.getElementById('whatsappModal').classList.add('hidden'); }
+    function copyWhatsappText() {
+      const copyText = document.getElementById("whatsappText");
+      copyText.select();
+      navigator.clipboard.writeText(copyText.value);
+      alert("Report copied to clipboard!");
+    }
+
+    window.onload = loadData;
+  </script>
+</body>
+</html>
