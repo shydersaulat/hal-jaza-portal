@@ -132,6 +132,7 @@
 
         let contributionsData = [];
         let disbursalsData = [];
+        let contributorYTD = {};
         let currentTab = 'received';
         let chartInstance = null;
 
@@ -168,10 +169,16 @@
         function processAllData() {
             let totalCollected = 0;
             let monthTotals = {};
+            contributorYTD = {};
 
             contributionsData.forEach(row => {
+                let name = row.Contributor || row.Name || row['Contributor Name'] || 'N/A';
                 let amt = parseAmount(row.Amount || row.amount || row.AMOUNT);
                 totalCollected += amt;
+                
+                // Calculate YTD per contributor
+                contributorYTD[name] = (contributorYTD[name] || 0) + amt;
+
                 let month = row.Month || row.month || row.MONTH || 'Unknown';
                 monthTotals[month] = (monthTotals[month] || 0) + amt;
             });
@@ -249,14 +256,33 @@
                 let name = row.Contributor || row.Name || row['Contributor Name'] || row.Beneficiary || row.Purpose || 'N/A';
                 let month = row.Month || row.month || 'N/A';
                 let amt = parseAmount(row.Amount || row.amount);
-                let status = row.Status || (currentTab === 'received' ? 'Received' : 'Disbursed');
-                let statusColor = currentTab === 'received' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700';
+                
+                // Show YTD next to name for contributions tab
+                let displayName = name;
+                if (currentTab === 'received' && contributorYTD[name] !== undefined) {
+                    displayName = `${name} <span class="text-xs text-slate-400 font-normal">(YTD: ₹${contributorYTD[name].toLocaleString('en-IN')})</span>`;
+                }
+
+                // If amount is 0 or missing, mark status as Pending in red
+                let status = row.Status;
+                let statusColor = 'bg-emerald-50 text-emerald-700';
+                
+                if (amt === 0 || !status || status.toLowerCase() === 'pending') {
+                    status = 'Pending';
+                    statusColor = 'bg-rose-50 text-rose-700';
+                } else if (currentTab === 'disbursed') {
+                    status = 'Disbursed';
+                    statusColor = 'bg-rose-50 text-rose-700';
+                } else {
+                    status = 'Received';
+                    statusColor = 'bg-emerald-50 text-emerald-700';
+                }
 
                 let tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-50 transition';
                 tr.innerHTML = `
                     <td class="p-4 text-slate-500">${index + 1}</td>
-                    <td class="p-4 font-medium text-slate-800">${name}</td>
+                    <td class="p-4 font-medium text-slate-800">${displayName}</td>
                     <td class="p-4 text-slate-600">${month}</td>
                     <td class="p-4 font-semibold text-slate-800">₹${amt.toLocaleString('en-IN')}</td>
                     <td class="p-4"><span class="${statusColor} px-3 py-1 rounded-full text-xs font-semibold">${status}</span></td>
