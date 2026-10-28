@@ -61,7 +61,7 @@
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-2 h-full bg-rose-500"></div>
                     <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Disbursed</p>
-                    <h3 id="total-disbursed" class="text-2xl font-bold text-slate-800 mt-1">₹0</h3>
+                    <h3 id="total-disbursed" class="text-2xl font-bold text-slate-800 mt-1">Loading...</h3>
                 </div>
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-2 h-full bg-blue-500"></div>
@@ -127,41 +127,70 @@
 
     <!-- JavaScript for Data Fetching & Rendering -->
     <script>
-        // Yahan apna asli published Google Sheet CSV link daalein
-        const SHEET_CSV_URL = 'AHPNA_ASLI_GOOGLE_SHEET_CSV_LINK_YAHAN_DAALEIN';
+        const CONTRIBUTIONS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTRPbOeifJU0NdFl_tNolIMeB7SDYbANFSdDKsB2SPpC8fv4d7fcJg8P-SrAqPx8xkOnPabhN3sDgtC/pub?gid=0&single=true&output=csv';
+        const DISBURSALS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTRPbOeifJU0NdFl_tNolIMeB7SDYbANFSdDKsB2SPpC8fv4d7fcJg8P-SrAqPx8xkOnPabhN3sDgtC/pub?gid=1&single=true&output=csv';
 
-        let allData = [];
+        let contributionsData = [];
+        let disbursalsData = [];
         let currentTab = 'received';
         let chartInstance = null;
 
-        function fetchData() {
-            Papa.parse(SHEET_CSV_URL, {
+        function initDashboard() {
+            let loadedCount = 0;
+
+            Papa.parse(CONTRIBUTIONS_CSV_URL, {
                 download: true,
                 header: true,
                 complete: function(results) {
-                    allData = results.data.filter(row => row && Object.values(row).some(val => val !== ""));
-                    processDashboard();
+                    contributionsData = results.data.filter(row => row && Object.values(row).some(val => val !== ""));
+                    loadedCount++;
+                    if (loadedCount === 2) processAllData();
+                }
+            });
+
+            Papa.parse(DISBURSALS_CSV_URL, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    disbursalsData = results.data.filter(row => row && Object.values(row).some(val => val !== ""));
+                    loadedCount++;
+                    if (loadedCount === 2) processAllData();
                 }
             });
         }
 
-        function processDashboard() {
+        function parseAmount(val) {
+            if (!val) return 0;
+            let num = parseFloat(String(val).replace(/[^0-9.-]+/g, ""));
+            return isNaN(num) ? 0 : num;
+        }
+
+        function processAllData() {
             let totalCollected = 0;
             let monthTotals = {};
 
-            allData.forEach(row => {
-                let amt = parseFloat(row.Amount || row.amount || 0);
+            contributionsData.forEach(row => {
+                let amt = parseAmount(row.Amount || row.amount || row.AMOUNT);
                 totalCollected += amt;
-                let month = row.Month || row.month || 'Unknown';
+                let month = row.Month || row.month || row.MONTH || 'Unknown';
                 monthTotals[month] = (monthTotals[month] || 0) + amt;
             });
 
+            let totalDisbursed = 0;
+            disbursalsData.forEach(row => {
+                let amt = parseAmount(row.Amount || row.amount || row.AMOUNT);
+                totalDisbursed += amt;
+            });
+
+            let netBalance = totalCollected - totalDisbursed;
+
             document.getElementById('total-collected').innerText = '₹' + totalCollected.toLocaleString('en-IN');
-            document.getElementById('net-balance').innerText = '₹' + totalCollected.toLocaleString('en-IN');
+            document.getElementById('total-disbursed').innerText = '₹' + totalDisbursed.toLocaleString('en-IN');
+            document.getElementById('net-balance').innerText = '₹' + netBalance.toLocaleString('en-IN');
 
             populateMonthFilter(Object.keys(monthTotals));
             renderChart(monthTotals);
-            renderTable(allData);
+            renderTable(contributionsData);
         }
 
         function populateMonthFilter(months) {
@@ -210,15 +239,27 @@
             let tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
 
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">No records found.</td></tr>`;
+                document.getElementById('record-count').innerText = `0 records`;
+                return;
+            }
+
             dataToRender.forEach((row, index) => {
+                let name = row.Contributor || row.Name || row['Contributor Name'] || row.Beneficiary || row.Purpose || 'N/A';
+                let month = row.Month || row.month || 'N/A';
+                let amt = parseAmount(row.Amount || row.amount);
+                let status = row.Status || (currentTab === 'received' ? 'Received' : 'Disbursed');
+                let statusColor = currentTab === 'received' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700';
+
                 let tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-50 transition';
                 tr.innerHTML = `
                     <td class="p-4 text-slate-500">${index + 1}</td>
-                    <td class="p-4 font-medium text-slate-800">${row.Contributor || row.Name || row.ContributorName || 'N/A'}</td>
-                    <td class="p-4 text-slate-600">${row.Month || row.month || 'N/A'}</td>
-                    <td class="p-4 font-semibold text-slate-800">₹${parseFloat(row.Amount || row.amount || 0).toLocaleString('en-IN')}</td>
-                    <td class="p-4"><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">${row.Status || 'Received'}</span></td>
+                    <td class="p-4 font-medium text-slate-800">${name}</td>
+                    <td class="p-4 text-slate-600">${month}</td>
+                    <td class="p-4 font-semibold text-slate-800">₹${amt.toLocaleString('en-IN')}</td>
+                    <td class="p-4"><span class="${statusColor} px-3 py-1 rounded-full text-xs font-semibold">${status}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -231,27 +272,30 @@
             let recBtn = document.getElementById('tab-received');
             let disBtn = document.getElementById('tab-disbursed');
             let nameHeader = document.getElementById('nameHeader');
+            let caption = document.getElementById('table-caption');
 
             if(tab === 'received') {
                 recBtn.className = "px-5 py-2.5 rounded-xl text-sm font-semibold transition bg-emerald-600 text-white shadow-sm";
                 disBtn.className = "px-5 py-2.5 rounded-xl text-sm font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200";
                 nameHeader.innerText = "Contributor Name";
-                renderTable(allData);
+                caption.innerText = "Contribution Records (Live from Google Sheet)";
+                renderTable(contributionsData);
             } else {
                 disBtn.className = "px-5 py-2.5 rounded-xl text-sm font-semibold transition bg-emerald-600 text-white shadow-sm";
                 recBtn.className = "px-5 py-2.5 rounded-xl text-sm font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200";
                 nameHeader.innerText = "Beneficiary / Purpose";
-                document.getElementById('tableBody').innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">No disbursal records found.</td></tr>`;
-                document.getElementById('record-count').innerText = `0 records`;
+                caption.innerText = "Disbursal Records (Live from Google Sheet)";
+                renderTable(disbursalsData);
             }
         }
 
         function filterTable() {
             let query = document.getElementById('searchInput').value.toLowerCase();
             let selectedMonth = document.getElementById('monthFilter').value;
+            let targetData = currentTab === 'received' ? contributionsData : disbursalsData;
 
-            let filtered = allData.filter(row => {
-                let name = (row.Contributor || row.Name || row.ContributorName || '').toLowerCase();
+            let filtered = targetData.filter(row => {
+                let name = (row.Contributor || row.Name || row['Contributor Name'] || row.Beneficiary || row.Purpose || '').toLowerCase();
                 let month = row.Month || row.month || '';
                 let matchesQuery = name.includes(query);
                 let matchesMonth = (selectedMonth === 'All' || month === selectedMonth);
@@ -261,7 +305,7 @@
             renderTable(filtered);
         }
 
-        window.onload = fetchData;
+        window.onload = initDashboard;
     </script>
 </body>
 </html>
