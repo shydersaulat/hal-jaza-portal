@@ -40,7 +40,7 @@
                 <div>
                     <p class="text-xs uppercase tracking-widest text-emerald-300 font-medium mb-1">LIVE TRANSPARENCY PORTAL</p>
                     <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Hal Jaza'u al-Ihsani Illal Ihsan</h1>
-                    <p class="text-emerald-200 text-sm mt-1 font-arabic" dir="rtl">هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ</p>
+                    <p class="text-emerald-200 text-sm mt-1 font-arabic" dir="rtl">هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ</p>
                 </div>
                 <a href="https://wa.me/?text=Check%20out%20the%20live%20financial%20transparency%20portal%20at%20https://shydersaulat.github.io/hal-jaza-portal/" target="_blank" class="bg-emerald-800 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition border border-emerald-700 flex items-center gap-2 shadow-sm">
                     <span>💬</span> WhatsApp Report
@@ -184,7 +184,7 @@
             contributorYTD = {};
 
             contributionsData.forEach(row => {
-                let name = getVal(row, ['Contributor Name', 'Contributor', 'Name', 'CONTRIBUTOR NAME', 'contributor']);
+                let name = getVal(row, ['Contributor Name', 'Recipient Name', 'Contributor', 'Name', 'CONTRIBUTOR NAME', 'contributor']);
                 if (!name) name = 'N/A';
                 
                 let amtStr = getVal(row, ['Amount', 'AMOUNT', 'amount']);
@@ -193,7 +193,7 @@
                 totalCollected += amt;
                 contributorYTD[name] = (contributorYTD[name] || 0) + amt;
 
-                let month = getVal(row, ['Month', 'MONTH', 'month']) || 'Unknown';
+                let month = getVal(row, ['Month', 'Date/Month', 'MONTH', 'month']) || 'Unknown';
                 monthTotals[month] = (monthTotals[month] || 0) + amt;
             });
 
@@ -268,10 +268,10 @@
             }
 
             dataToRender.forEach((row, index) => {
-                let name = getVal(row, ['Contributor Name', 'Contributor', 'Name', 'Beneficiary', 'Purpose', 'CONTRIBUTOR NAME', 'contributor']);
+                let name = getVal(row, ['Recipient Name', 'Contributor Name', 'Contributor', 'Name', 'Beneficiary', 'Purpose', 'CONTRIBUTOR NAME', 'contributor']);
                 if (!name) name = 'N/A';
                 
-                let month = getVal(row, ['Month', 'MONTH', 'month']) || 'N/A';
+                let month = getVal(row, ['Date/Month', 'Month', 'MONTH', 'month']) || 'N/A';
                 let amtStr = getVal(row, ['Amount', 'AMOUNT', 'amount']);
                 let amt = parseAmount(amtStr);
                 
@@ -339,8 +339,8 @@
             let targetData = currentTab === 'received' ? contributionsData : disbursalsData;
 
             let filtered = targetData.filter(row => {
-                let name = getVal(row, ['Contributor Name', 'Contributor', 'Name', 'Beneficiary', 'Purpose', 'CONTRIBUTOR NAME', 'contributor']).toLowerCase();
-                let month = getVal(row, ['Month', 'MONTH', 'month']);
+                let name = getVal(row, ['Recipient Name', 'Contributor Name', 'Contributor', 'Name', 'Beneficiary', 'Purpose', 'CONTRIBUTOR NAME', 'contributor']).toLowerCase();
+                let month = getVal(row, ['Date/Month', 'Month', 'MONTH', 'month']);
                 let matchesQuery = name.includes(query);
                 let matchesMonth = (selectedMonth === 'All' || month === selectedMonth);
                 return matchesQuery && matchesMonth;
