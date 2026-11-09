@@ -72,7 +72,7 @@
                     <h3 id="net-balance" class="text-xl font-bold text-slate-800 mt-0.5">Loading...</h3>
                 </div>
 
-                <!-- Compact Side-by-side or stacked Tabs -->
+                <!-- Tabs -->
                 <div class="flex gap-2 bg-white rounded-xl p-3 shadow-sm border border-slate-100">
                     <button id="tab-received" onclick="switchTab('received')" class="flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition bg-emerald-600 text-white shadow-sm text-center">
                         Received
@@ -97,15 +97,37 @@
 
         <!-- Tables & Search Controls Section -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">
-            <!-- Search bar & Filter controls only -->
+            <!-- Search bar & Separate Month / Year Filter controls -->
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-100 pb-4">
                 <div class="text-sm font-bold text-slate-700 flex items-center gap-2">
                     <span id="table-caption-title">Contribution Records (Live from Google Sheet)</span>
                 </div>
-                <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search records..." class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 w-full md:w-64">
-                    <select id="monthFilter" onchange="filterTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search records..." class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 w-full md:w-48">
+                    
+                    <!-- Month Filter Dropdown -->
+                    <select id="monthFilter" onchange="filterTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                         <option value="All">All Months</option>
+                        <option value="Jan">January</option>
+                        <option value="Feb">February</option>
+                        <option value="Mar">March</option>
+                        <option value="Apr">April</option>
+                        <option value="May">May</option>
+                        <option value="Jun">June</option>
+                        <option value="Jul">July</option>
+                        <option value="Aug">August</option>
+                        <option value="Sep">September</option>
+                        <option value="Oct">October</option>
+                        <option value="Nov">November</option>
+                        <option value="Dec">December</option>
+                    </select>
+
+                    <!-- Year Filter Dropdown -->
+                    <select id="yearFilter" onchange="filterTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="All">All Years</option>
+                        <option value="25">2025</option>
+                        <option value="26">2026</option>
+                        <option value="27">2027</option>
                     </select>
                 </div>
             </div>
@@ -219,20 +241,8 @@
             document.getElementById('total-disbursed').innerText = '₹' + totalDisbursed.toLocaleString('en-IN');
             document.getElementById('net-balance').innerText = '₹' + netBalance.toLocaleString('en-IN');
 
-            populateMonthFilter(Object.keys(monthTotals));
             renderChart(monthTotals);
             renderTable(contributionsData);
-        }
-
-        function populateMonthFilter(months) {
-            let select = document.getElementById('monthFilter');
-            select.innerHTML = '<option value="All">All Months</option>';
-            months.forEach(m => {
-                let opt = document.createElement('option');
-                opt.value = m;
-                opt.innerText = m;
-                select.appendChild(opt);
-            });
         }
 
         function renderChart(monthTotals) {
@@ -340,19 +350,28 @@
                 captionTitle.innerText = "Disbursal Records (Live from Google Sheet)";
                 renderTable(disbursalsData);
             }
+            filterTable();
         }
 
         function filterTable() {
             let query = document.getElementById('searchInput').value.toLowerCase();
-            let selectedMonth = document.getElementById('monthFilter').value;
+            let selectedMonth = document.getElementById('monthFilter').value; // e.g. "Nov"
+            let selectedYear = document.getElementById('yearFilter').value;   // e.g. "26"
             let targetData = currentTab === 'received' ? contributionsData : disbursalsData;
 
             let filtered = targetData.filter(row => {
                 let name = getVal(row, ['Recipient Name', 'Contributor Name', 'Contributor', 'Name', 'Beneficiary', 'Purpose', 'CONTRIBUTOR NAME', 'contributor']).toLowerCase();
-                let month = getVal(row, ['Date/Month', 'Month', 'MONTH', 'month']);
+                let monthVal = getVal(row, ['Date/Month', 'Month', 'MONTH', 'month']); // expected format like "Nov-26" or similar
+
                 let matchesQuery = name.includes(query);
-                let matchesMonth = (selectedMonth === 'All' || month === selectedMonth);
-                return matchesQuery && matchesMonth;
+                
+                // Check month match (e.g. if row has "Nov-26" and selectedMonth is "Nov")
+                let matchesMonth = (selectedMonth === 'All' || monthVal.toLowerCase().includes(selectedMonth.toLowerCase()));
+                
+                // Check year match (e.g. if row has "Nov-26" and selectedYear is "26")
+                let matchesYear = (selectedYear === 'All' || monthVal.toLowerCase().includes(selectedYear.toLowerCase()));
+
+                return matchesQuery && matchesMonth && matchesYear;
             });
 
             renderTable(filtered);
