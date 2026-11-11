@@ -7,42 +7,48 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f6f4; }
+        .font-arabic { font-family: 'Amiri', serif; }
+        .gold-border { border-color: #d4af37; }
+        .gold-text { color: #b8860b; }
+        .bg-gold { background-color: #d4af37; }
+        .bg-gold-light { background-color: #fdfbf7; }
+        .gold-gradient { background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%); }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800">
+<body class="bg-slate-100 min-h-screen text-slate-800">
 
     <!-- Sticky Top Wrapper for Shrines & Header -->
     <div class="sticky top-0 z-50 shadow-md">
         <!-- Top Shrines Navigation Bar -->
-        <div class="bg-emerald-950 text-white py-3 px-6">
+        <div class="bg-emerald-950 text-white py-2.5 px-6 border-b border-amber-500/30">
             <div class="w-full px-4 flex flex-col md:flex-row justify-between items-center gap-3">
-                <div class="text-xs uppercase tracking-wider font-semibold text-emerald-400 flex items-center gap-2">
+                <div class="text-xs uppercase tracking-wider font-semibold text-amber-400 flex items-center gap-2">
                     <span>🕌</span> SACRED SHRINES & HOLY SITES ALIGNMENT
                 </div>
                 <div class="flex flex-wrap justify-center gap-2 text-xs">
-                    <span class="bg-emerald-900/80 px-3 py-1.5 rounded-lg border border-emerald-800 flex items-center gap-1.5">Ka'aba <span class="text-[10px] text-emerald-400">Makkah</span></span>
-                    <span class="bg-emerald-900/80 px-3 py-1.5 rounded-lg border border-emerald-800 flex items-center gap-1.5">Masjid-an-Nabawi <span class="text-[10px] text-emerald-400">Madinah</span></span>
-                    <span class="bg-emerald-900/80 px-3 py-1.5 rounded-lg border border-emerald-800 flex items-center gap-1.5">Imam Ali (AS) <span class="text-[10px] text-emerald-400">Najaf</span></span>
-                    <span class="bg-emerald-900/80 px-3 py-1.5 rounded-lg border border-emerald-800 flex items-center gap-1.5">Imam Hussain (AS) <span class="text-[10px] text-emerald-400">Karbala</span></span>
-                    <span class="bg-emerald-900/80 px-3 py-1.5 rounded-lg border border-emerald-800 flex items-center gap-1.5">Kadhimain Shrines <span class="text-[10px] text-emerald-400">Baghdad</span></span>
-                    <span class="bg-emerald-900/80 px-3 py-1.5 rounded-lg border border-emerald-800 flex items-center gap-1.5">Samarra Shrines <span class="text-[10px] text-emerald-400">Samarra</span></span>
-                    <span class="bg-emerald-900/80 px-3 py-1.5 rounded-lg border border-emerald-800 flex items-center gap-1.5">Imam Reza (AS) <span class="text-[10px] text-emerald-400">Mashhad</span></span>
+                    <span class="bg-emerald-900/90 px-3 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">Ka'aba <span class="text-[10px] text-amber-300">Makkah</span></span>
+                    <span class="bg-emerald-900/90 px-3 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">Masjid-an-Nabawi <span class="text-[10px] text-amber-300">Madinah</span></span>
+                    <span class="bg-emerald-900/90 px-3 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">Imam Ali (AS) <span class="text-[10px] text-amber-300">Najaf</span></span>
+                    <span class="bg-emerald-900/90 px-3 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">Imam Hussain (AS) <span class="text-[10px] text-amber-300">Karbala</span></span>
+                    <span class="bg-emerald-900/90 px-3 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">Kadhimain Shrines <span class="text-[10px] text-amber-300">Baghdad</span></span>
+                    <span class="bg-emerald-900/90 px-3 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">Samarra Shrines <span class="text-[10px] text-amber-300">Samarra</span></span>
+                    <span class="bg-emerald-900/90 px-3 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">Imam Reza (AS) <span class="text-[10px] text-amber-300">Mashhad</span></span>
                 </div>
             </div>
         </div>
 
         <!-- Main Header Banner -->
-        <header class="bg-emerald-900 text-white shadow-lg">
-            <div class="w-full px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <header class="bg-emerald-900 text-white shadow-lg border-b-2 border-amber-500/40 relative">
+            <div class="w-full px-6 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div>
-                    <p class="text-xs uppercase tracking-widest text-emerald-300 font-medium mb-1">LIVE TRANSPARENCY PORTAL</p>
-                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Hal Jaza'u al-Ihsani Illal Ihsan</h1>
-                    <p class="text-emerald-200 text-sm mt-1 font-arabic" dir="rtl">هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ</p>
+                    <p class="text-[11px] uppercase tracking-widest text-amber-300 font-semibold mb-1">LIVE TRANSPARENCY PORTAL</p>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-amber-100">Hal Jaza'u al-Ihsani Illal Ihsan</h1>
+                    <p class="text-amber-200/90 text-sm mt-1 font-arabic tracking-wide" dir="rtl">هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ</p>
                 </div>
-                <a href="https://wa.me/?text=Check%20out%20the%20live%20financial%20transparency%20portal%20at%20https://shydersaulat.github.io/hal-jaza-portal/" target="_blank" class="bg-emerald-800 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition border border-emerald-700 flex items-center gap-2 shadow-sm">
+                <a href="https://wa.me/?text=Check%20out%20the%20live%20financial%20transparency%20portal%20at%20https://shydersaulat.github.io/hal-jaza-portal/" target="_blank" class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition border border-amber-400/40 flex items-center gap-2 shadow-md">
                     <span>💬</span> WhatsApp Report
                 </a>
             </div>
@@ -52,35 +58,35 @@
     <!-- Main Container Fully Expanded -->
     <main class="w-full px-6 py-8 space-y-6">
 
-        <!-- Metrics & Chart Section (4-Column Layout: Left Column width slim, Right Chart/Tabs span remaining) -->
+        <!-- Metrics & Chart Section (4-Column Layout) -->
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
             
-            <!-- Column 1 (Left Slim): Compact Metrics Cards -->
+            <!-- Column 1 (Left Slim): Gold-Accented Metrics Cards -->
             <div class="space-y-3 flex flex-col justify-between">
-                <div class="bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-1.5 h-full bg-emerald-500"></div>
-                    <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Total Collected</p>
-                    <h3 id="total-collected" class="text-xl font-bold text-slate-800 mt-0.5">Loading...</h3>
+                <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-l-amber-500 border-y border-r border-amber-100/80 relative overflow-hidden">
+                    <p class="text-[11px] font-bold text-amber-800 uppercase tracking-wider">Total Collected</p>
+                    <h3 id="total-collected" class="text-xl font-bold text-emerald-950 mt-1">Loading...</h3>
                 </div>
-                <div class="bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-1.5 h-full bg-rose-500"></div>
-                    <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Total Disbursed</p>
-                    <h3 id="total-disbursed" class="text-xl font-bold text-slate-800 mt-0.5">Loading...</h3>
+                <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-l-rose-500 border-y border-r border-rose-100/80 relative overflow-hidden">
+                    <p class="text-[11px] font-bold text-rose-800 uppercase tracking-wider">Total Disbursed</p>
+                    <h3 id="total-disbursed" class="text-xl font-bold text-slate-800 mt-1">Loading...</h3>
                 </div>
-                <div class="bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-1.5 h-full bg-blue-500"></div>
-                    <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Net Balance</p>
-                    <h3 id="net-balance" class="text-xl font-bold text-slate-800 mt-0.5">Loading...</h3>
+                <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-l-emerald-600 border-y border-r border-emerald-100/80 relative overflow-hidden">
+                    <p class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">Net Balance</p>
+                    <h3 id="net-balance" class="text-xl font-bold text-emerald-900 mt-1">Loading...</h3>
                 </div>
             </div>
 
-            <!-- Columns 2-4 (Right): Chart on top, and Received/Disbursals block right beside/below chart -->
+            <!-- Columns 2-4 (Right): Chart on top, and Received/Disbursals block -->
             <div class="lg:col-span-3 space-y-4 flex flex-col justify-between">
                 <!-- Right Side Chart Card -->
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-200/60 flex flex-col justify-between">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Monthly Contributions Trend</h3>
-                        <span class="text-xs text-emerald-600 font-medium bg-emerald-50 px-2.5 py-1 rounded-full">Live Analytics</span>
+                        <h3 class="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            Monthly Contributions Trend
+                        </h3>
+                        <span class="text-xs text-amber-800 font-semibold bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">Live Analytics</span>
                     </div>
                     <div class="relative h-48 w-full">
                         <canvas id="contributionChart"></canvas>
@@ -88,13 +94,13 @@
                 </div>
 
                 <!-- Received / Disbursals Block Placed Right Under Chart -->
-                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center justify-between gap-4">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-2">Select View:</span>
+                <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-amber-200/60 flex items-center justify-between gap-4">
+                    <span class="text-xs font-bold text-emerald-950 uppercase tracking-wider px-2">Select View:</span>
                     <div class="flex gap-3 flex-1 max-w-md">
-                        <button id="tab-received" onclick="switchTab('received')" class="flex-1 px-4 py-2.5 rounded-xl text-xs font-semibold transition bg-emerald-600 text-white shadow-sm text-center">
+                        <button id="tab-received" onclick="switchTab('received')" class="flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-emerald-900 text-amber-300 border border-amber-500/40 shadow-sm text-center">
                             Contributions Received
                         </button>
-                        <button id="tab-disbursed" onclick="switchTab('disbursed')" class="flex-1 px-4 py-2.5 rounded-xl text-xs font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200 text-center">
+                        <button id="tab-disbursed" onclick="switchTab('disbursed')" class="flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 text-center">
                             Help Given (Disbursals)
                         </button>
                     </div>
@@ -104,17 +110,17 @@
         </div>
 
         <!-- Tables & Search Controls Section -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-amber-200/60 p-6 space-y-6">
             <!-- Search bar & Separate Month / Year Filter controls -->
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-100 pb-4">
-                <div class="text-sm font-bold text-slate-700 flex items-center gap-2">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-amber-100 pb-4">
+                <div class="text-sm font-bold text-emerald-950 flex items-center gap-2">
                     <span id="table-caption-title">Contribution Records (Live from Google Sheet)</span>
                 </div>
                 <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
-                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search records..." class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 w-full md:w-48">
+                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search records..." class="bg-amber-50/40 border border-amber-200/80 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 w-full md:w-48">
                     
                     <!-- Month Filter Dropdown -->
-                    <select id="monthFilter" onchange="filterTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <select id="monthFilter" onchange="filterTable()" class="bg-amber-50/40 border border-amber-200/80 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium text-slate-700">
                         <option value="All">All Months</option>
                         <option value="Jan">January</option>
                         <option value="Feb">February</option>
@@ -131,7 +137,7 @@
                     </select>
 
                     <!-- Year Filter Dropdown -->
-                    <select id="yearFilter" onchange="filterTable()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <select id="yearFilter" onchange="filterTable()" class="bg-amber-50/40 border border-amber-200/80 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium text-slate-700">
                         <option value="All">All Years</option>
                         <option value="25">2025</option>
                         <option value="26">2026</option>
@@ -141,15 +147,15 @@
             </div>
 
             <!-- Table Info -->
-            <div class="flex justify-between items-center text-xs text-slate-500 font-medium">
+            <div class="flex justify-between items-center text-xs text-amber-900 font-medium">
                 <span id="table-caption">Showing active live records</span>
-                <span id="record-count">0 records</span>
+                <span id="record-count" class="font-semibold text-emerald-900">0 records</span>
             </div>
 
             <!-- Scrollable Table Container -->
-            <div class="overflow-x-auto max-h-[420px] overflow-y-auto border border-slate-100 rounded-xl">
+            <div class="overflow-x-auto max-h-[420px] overflow-y-auto border border-amber-200/50 rounded-xl shadow-inner">
                 <table id="dataTable" class="w-full text-left border-collapse">
-                    <thead class="bg-slate-100 sticky top-0 text-xs uppercase font-semibold text-slate-600 tracking-wider z-10">
+                    <thead class="bg-emerald-950 sticky top-0 text-xs uppercase font-bold text-amber-300 tracking-wider z-10 border-b border-amber-500/30">
                         <tr>
                             <th class="p-4">S.No</th>
                             <th class="p-4" id="nameHeader">Contributor Name</th>
@@ -158,7 +164,7 @@
                             <th class="p-4">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="divide-y divide-slate-100 text-sm">
+                    <tbody id="tableBody" class="divide-y divide-amber-100/60 text-sm">
                         <!-- Data inserted dynamically via JavaScript -->
                     </tbody>
                 </table>
@@ -260,6 +266,11 @@
             let ctx = document.getElementById('contributionChart').getContext('2d');
             if(chartInstance) chartInstance.destroy();
 
+            // Gold & Green mixed Gradient for Bars
+            let gradient = ctx.createLinearGradient(0, 0, 0, 200);
+            gradient.addColorStop(0, '#d4af37'); // Gold top
+            gradient.addColorStop(1, '#064e3b'); // Dark Green bottom
+
             chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -267,7 +278,7 @@
                     datasets: [{
                         label: 'Contributions (₹)',
                         data: data,
-                        backgroundColor: '#059669',
+                        backgroundColor: gradient,
                         borderRadius: 6,
                         barThickness: 'flex'
                     }]
@@ -277,7 +288,7 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { grid: { color: '#f1f5f9' }, ticks: { font: { family: 'Plus Jakarta Sans' } } },
+                        y: { grid: { color: '#fef3c7' }, ticks: { font: { family: 'Plus Jakarta Sans' } } },
                         x: { grid: { display: false }, ticks: { font: { family: 'Plus Jakarta Sans' } } }
                     }
                 }
@@ -304,33 +315,33 @@
                 
                 let displayName = name;
                 if (currentTab === 'received' && contributorYTD[name] !== undefined) {
-                    displayName = `${name} <span class="text-xs text-slate-400 font-normal">(YTD: ₹${contributorYTD[name].toLocaleString('en-IN')})</span>`;
+                    displayName = `${name} <span class="text-xs text-amber-700 font-normal">(YTD: ₹${contributorYTD[name].toLocaleString('en-IN')})</span>`;
                 }
 
-                let statusColor = 'bg-emerald-50 text-emerald-700';
+                let statusColor = 'bg-emerald-50 text-emerald-800 border border-emerald-200';
                 let statusText = 'Received';
 
                 if (currentTab === 'received') {
                     if (amt === 0 || amtStr === '' || amtStr === '0') {
                         statusText = 'Pending';
-                        statusColor = 'bg-rose-50 text-rose-700';
+                        statusColor = 'bg-rose-50 text-rose-800 border border-rose-200';
                     } else {
                         statusText = 'Received';
-                        statusColor = 'bg-emerald-50 text-emerald-700';
+                        statusColor = 'bg-emerald-50 text-emerald-800 border border-emerald-200';
                     }
                 } else {
                     statusText = 'Disbursed';
-                    statusColor = 'bg-rose-50 text-rose-700';
+                    statusColor = 'bg-rose-50 text-rose-800 border border-rose-200';
                 }
 
                 let tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 transition';
+                tr.className = 'hover:bg-amber-50/50 transition';
                 tr.innerHTML = `
-                    <td class="p-4 text-slate-500">${index + 1}</td>
-                    <td class="p-4 font-medium text-slate-800">${displayName}</td>
-                    <td class="p-4 text-slate-600">${month}</td>
-                    <td class="p-4 font-semibold text-slate-800">₹${amt.toLocaleString('en-IN')}</td>
-                    <td class="p-4"><span class="${statusColor} px-3 py-1 rounded-full text-xs font-semibold">${statusText}</span></td>
+                    <td class="p-4 text-slate-500 font-medium">${index + 1}</td>
+                    <td class="p-4 font-semibold text-emerald-950">${displayName}</td>
+                    <td class="p-4 text-slate-600 font-medium">${month}</td>
+                    <td class="p-4 font-bold text-slate-900">₹${amt.toLocaleString('en-IN')}</td>
+                    <td class="p-4"><span class="${statusColor} px-3 py-1 rounded-full text-xs font-bold">${statusText}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -346,14 +357,14 @@
             let captionTitle = document.getElementById('table-caption-title');
 
             if(tab === 'received') {
-                recBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-semibold transition bg-emerald-600 text-white shadow-sm text-center";
-                disBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200 text-center";
+                recBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-emerald-900 text-amber-300 border border-amber-500/40 shadow-sm text-center";
+                disBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 text-center";
                 nameHeader.innerText = "Contributor Name";
                 captionTitle.innerText = "Contribution Records (Live from Google Sheet)";
                 renderTable(contributionsData);
             } else {
-                disBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-semibold transition bg-emerald-600 text-white shadow-sm text-center";
-                recBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200 text-center";
+                disBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-emerald-900 text-amber-300 border border-amber-500/40 shadow-sm text-center";
+                recBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 text-center";
                 nameHeader.innerText = "Beneficiary / Purpose";
                 captionTitle.innerText = "Disbursal Records (Live from Google Sheet)";
                 renderTable(disbursalsData);
