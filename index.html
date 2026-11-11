@@ -11,72 +11,97 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f6f4; }
         .font-arabic { font-family: 'Amiri', serif; }
-        .shrine-img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; }
+        .shrine-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(6, 78, 59, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 11px;
+            color: #fef3c7;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .shrine-badge img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #d4af37;
+        }
+        .kaaba-highlight {
+            background: rgba(212, 175, 55, 0.25) !important;
+            border: 1.5px solid #d4af37 !important;
+            color: #ffffff !important;
+        }
     </style>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800">
 
     <!-- Sticky Top Wrapper for Shrines & Header -->
     <div class="sticky top-0 z-50 shadow-md">
-        <!-- Top Shrines Navigation Bar -->
-        <div class="bg-emerald-950 text-white py-2.5 px-6 border-b border-amber-500/30">
-            <div class="w-full px-4 flex flex-col md:flex-row justify-between items-center gap-3">
-                <div class="text-xs uppercase tracking-wider font-semibold text-amber-400 flex items-center gap-2">
-                    <span>🕌</span> SACRED SHRINES & HOLY SITES ALIGNMENT
-                </div>
-                
-                <!-- Ordered Shrines Alignment: Left (Imam Ali & Shrines) -> Center (Kaaba) -> Right (Nabawi & Shrines) -->
-                <div class="flex flex-wrap justify-center items-center gap-2 text-xs">
-                    
-                    <!-- LEFT SIDE: Imam Ali (AS), Imam Hussain (AS), Kadhimain -->
-                    <span class="bg-emerald-900/90 px-2.5 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">
-                        <img src="https://sl.bing.net/fBCMAtaX8km" class="shrine-img" alt="Imam Ali Shrine" onerror="this.style.display='none'">
-                        Imam Ali (AS) <span class="text-[10px] text-amber-300">Najaf</span>
-                    </span>
-                    <span class="bg-emerald-900/90 px-2.5 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">
-                        <img src="https://sl.bing.net/h1NJgpWTneC" class="shrine-img" alt="Imam Hussain Shrine" onerror="this.style.display='none'">
-                        Imam Hussain (AS) <span class="text-[10px] text-amber-300">Karbala</span>
-                    </span>
-                    <span class="bg-emerald-900/90 px-2.5 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">
-                        <img src="https://sl.bing.net/hxpRJ4dHSGO" class="shrine-img" alt="Kadhimain Shrine" onerror="this.style.display='none'">
-                        Kadhimain <span class="text-[10px] text-amber-300">Baghdad</span>
-                    </span>
-
-                    <!-- CENTER: KA'ABA (Highlighted) -->
-                    <span class="bg-amber-500/20 px-3 py-1 rounded-lg border-2 border-amber-400 flex items-center gap-1.5 font-bold text-amber-300 shadow-sm">
-                        <img src="https://sl.bing.net/h0RK0E3ffZk" class="shrine-img" alt="Kaaba" onerror="this.style.display='none'">
-                        Ka'aba <span class="text-[10px] text-amber-200">Makkah</span>
-                    </span>
-
-                    <!-- RIGHT SIDE: Masjid-an-Nabawi, Samarra, Imam Reza (AS) -->
-                    <span class="bg-emerald-900/90 px-2.5 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">
-                        <img src="https://sl.bing.net/cDKtoxOcWg8" class="shrine-img" alt="Masjid Nabawi" onerror="this.style.display='none'">
-                        Masjid-an-Nabawi <span class="text-[10px] text-amber-300">Madinah</span>
-                    </span>
-                    <span class="bg-emerald-900/90 px-2.5 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">
-                        <img src="https://sl.bing.net/cEYzDmTFVaS" class="shrine-img" alt="Samarra Shrine" onerror="this.style.display='none'">
-                        Samarra <span class="text-[10px] text-amber-300">Samarra</span>
-                    </span>
-                    <span class="bg-emerald-900/90 px-2.5 py-1 rounded-lg border border-amber-500/30 flex items-center gap-1.5">
-                        <img src="https://sl.bing.net/kA6e9iI2zXo" class="shrine-img" alt="Imam Reza Shrine" onerror="this.style.display='none'">
-                        Imam Reza (AS) <span class="text-[10px] text-amber-300">Mashhad</span>
-                    </span>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Header Banner -->
+        
+        <!-- Main Header Banner containing Title, WhatsApp button, AND the Shrines Images Grid -->
         <header class="bg-emerald-900 text-white shadow-lg border-b-2 border-amber-500/40 relative">
-            <div class="w-full px-6 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div>
-                    <p class="text-[11px] uppercase tracking-widest text-amber-300 font-semibold mb-1">LIVE TRANSPARENCY PORTAL</p>
-                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-amber-100">Hal Jaza'u al-Ihsani Illal Ihsan</h1>
-                    <p class="text-amber-200/90 text-sm mt-1 font-arabic tracking-wide" dir="rtl">هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ</p>
+            <div class="w-full px-6 py-5 space-y-4">
+                
+                <!-- Top Row: Title & WhatsApp Button -->
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <p class="text-[11px] uppercase tracking-widest text-amber-300 font-semibold mb-1">LIVE TRANSPARENCY PORTAL</p>
+                        <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-amber-100">Hal Jaza'u al-Ihsani Illal Ihsan</h1>
+                        <p class="text-amber-200/90 text-sm mt-1 font-arabic tracking-wide" dir="rtl">هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ</p>
+                    </div>
+                    <a href="https://wa.me/?text=Check%20out%20the%20live%20financial%20transparency%20portal%20at%20https://shydersaulat.github.io/hal-jaza-portal/" target="_blank" class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition border border-amber-400/40 flex items-center gap-2 shadow-md">
+                        <span>💬</span> WhatsApp Report
+                    </a>
                 </div>
-                <a href="https://wa.me/?text=Check%20out%20the%20live%20financial%20transparency%20portal%20at%20https://shydersaulat.github.io/hal-jaza-portal/" target="_blank" class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition border border-amber-400/40 flex items-center gap-2 shadow-md">
-                    <span>💬</span> WhatsApp Report
-                </a>
+
+                <!-- Bottom Row inside Header Block: Shrines with Images (Ordered: Left -> Center (Kaaba) -> Right) -->
+                <div class="pt-3 border-t border-emerald-800/80 flex flex-wrap justify-center items-center gap-2.5">
+                    
+                    <!-- LEFT SIDE: Imam Ali, Imam Hussain, Kadhimain, Samarra, Imam Reza -->
+                    <div class="shrine-badge">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Imam_Ali_Mosque_Najaf_Iraq.jpg/300px-Imam_Ali_Mosque_Najaf_Iraq.jpg" alt="Imam Ali">
+                        <span>Imam Ali (AS) <span class="text-amber-300 font-normal">Najaf</span></span>
+                    </div>
+
+                    <div class="shrine-badge">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Imam_Husayn_Shrine_Karbala_Iraq.jpg/300px-Imam_Husayn_Shrine_Karbala_Iraq.jpg" alt="Imam Hussain">
+                        <span>Imam Hussain (AS) <span class="text-amber-300 font-normal">Karbala</span></span>
+                    </div>
+
+                    <div class="shrine-badge">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Al-Kadhimiya_Mosque_2016.jpg/300px-Al-Kadhimiya_Mosque_2016.jpg" alt="Kadhimain">
+                        <span>Kadhimain <span class="text-amber-300 font-normal">Baghdad</span></span>
+                    </div>
+
+                    <!-- CENTER: KA'ABA (Highlighted cleanly in the middle) -->
+                    <div class="shrine-badge kaaba-highlight">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/The_Kaaba_in_Mecca_during_Hajj.jpg/300px-The_Kaaba_in_Mecca_during_Hajj.jpg" alt="Kaaba">
+                        <span class="font-bold">Ka'aba <span class="text-amber-200 font-normal">Makkah</span></span>
+                    </div>
+
+                    <!-- RIGHT SIDE: Masjid-an-Nabawi -->
+                    <div class="shrine-badge">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Al-Masjid_an-Nabawi_Green_Dome.jpg/300px-Al-Masjid_an-Nabawi_Green_Dome.jpg" alt="Masjid Nabawi">
+                        <span>Masjid-an-Nabawi <span class="text-amber-300 font-normal">Madinah</span></span>
+                    </div>
+
+                    <div class="shrine-badge">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Al-Askari_Shrine_Samarra.jpg/300px-Al-Askari_Shrine_Samarra.jpg" alt="Samarra">
+                        <span>Samarra <span class="text-amber-300 font-normal">Samarra</span></span>
+                    </div>
+
+                    <div class="shrine-badge">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Imam_Reza_Shrine_Mashhad_Iran.jpg/300px-Imam_Reza_Shrine_Mashhad_Iran.jpg" alt="Imam Reza">
+                        <span>Imam Reza (AS) <span class="text-amber-300 font-normal">Mashhad</span></span>
+                    </div>
+
+                </div>
+
             </div>
         </header>
     </div>
