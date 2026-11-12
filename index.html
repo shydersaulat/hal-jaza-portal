@@ -352,6 +352,7 @@
                 let name = getVal(row, ['Recipient Name', 'Contributor Name', 'Contributor', 'Name', 'Beneficiary', 'Purpose', 'CONTRIBUTOR NAME', 'contributor']);
                 if (!name) name = 'N/A';
                 
+                let reason = getVal(row, ['Reason', 'REASON', 'reason', 'Purpose']);
                 let month = getVal(row, ['Date/Month', 'Month', 'MONTH', 'month']) || 'N/A';
                 let amtStr = getVal(row, ['Amount', 'AMOUNT', 'amount']);
                 let amt = parseAmount(amtStr);
@@ -359,6 +360,8 @@
                 let displayName = name;
                 if (currentTab === 'received' && contributorYTD[name] !== undefined) {
                     displayName = `${name} <span class="text-xs text-amber-700 font-normal">(YTD: ₹${contributorYTD[name].toLocaleString('en-IN')})</span>`;
+                } else if (currentTab === 'disbursed' && reason) {
+                    displayName = `${name} <span class="ml-1.5 inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-amber-100/80 text-amber-900 border border-amber-300/60">${reason}</span>`;
                 }
 
                 let statusColor = 'bg-emerald-50 text-emerald-800 border border-emerald-200';
@@ -408,7 +411,7 @@
             } else {
                 disBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-emerald-900 text-amber-300 border border-amber-500/40 shadow-sm text-center";
                 recBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 text-center";
-                nameHeader.innerText = "Beneficiary / Purpose";
+                nameHeader.innerText = "Beneficiary & Reason";
                 captionTitle.innerText = "Disbursal Records (Live from Google Sheet)";
                 renderTable(disbursalsData);
             }
@@ -423,9 +426,10 @@
 
             let filtered = targetData.filter(row => {
                 let name = getVal(row, ['Recipient Name', 'Contributor Name', 'Contributor', 'Name', 'Beneficiary', 'Purpose', 'CONTRIBUTOR NAME', 'contributor']).toLowerCase();
+                let reason = getVal(row, ['Reason', 'REASON', 'reason', 'Purpose']).toLowerCase();
                 let monthVal = getVal(row, ['Date/Month', 'Month', 'MONTH', 'month']);
 
-                let matchesQuery = name.includes(query);
+                let matchesQuery = name.includes(query) || reason.includes(query);
                 let matchesMonth = (selectedMonth === 'All' || monthVal.toLowerCase().includes(selectedMonth.toLowerCase()));
                 let matchesYear = (selectedYear === 'All' || monthVal.toLowerCase().includes(selectedYear.toLowerCase()));
 
