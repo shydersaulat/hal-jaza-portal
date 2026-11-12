@@ -200,7 +200,7 @@
             <div class="overflow-x-auto max-h-[420px] overflow-y-auto border border-amber-200/50 rounded-xl shadow-inner">
                 <table id="dataTable" class="w-full text-left border-collapse">
                     <thead class="bg-emerald-950 sticky top-0 text-xs uppercase font-bold text-amber-300 tracking-wider z-10 border-b border-amber-500/30">
-                        <tr>
+                        <tr id="tableHeaderRow">
                             <th class="p-4">S.No</th>
                             <th class="p-4" id="nameHeader">Contributor Name</th>
                             <th class="p-4">Month</th>
@@ -340,10 +340,31 @@
 
         function renderTable(dataToRender) {
             let tbody = document.getElementById('tableBody');
+            let headerRow = document.getElementById('tableHeaderRow');
             tbody.innerHTML = '';
 
+            if (currentTab === 'received') {
+                headerRow.innerHTML = `
+                    <th class="p-4">S.No</th>
+                    <th class="p-4">Contributor Name</th>
+                    <th class="p-4">Month</th>
+                    <th class="p-4">Amount</th>
+                    <th class="p-4">Status</th>
+                `;
+            } else {
+                headerRow.innerHTML = `
+                    <th class="p-4">S.No</th>
+                    <th class="p-4">Recipient Name</th>
+                    <th class="p-4">Reason</th>
+                    <th class="p-4">Month</th>
+                    <th class="p-4">Amount</th>
+                    <th class="p-4">Status</th>
+                `;
+            }
+
             if (dataToRender.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">No records found.</td></tr>`;
+                let colSpan = currentTab === 'received' ? 5 : 6;
+                tbody.innerHTML = `<tr><td colspan="${colSpan}" class="p-8 text-center text-slate-400">No records found.</td></tr>`;
                 document.getElementById('record-count').innerText = `0 records`;
                 return;
             }
@@ -352,7 +373,7 @@
                 let name = getVal(row, ['Recipient Name', 'Contributor Name', 'Contributor', 'Name', 'Beneficiary', 'Purpose', 'CONTRIBUTOR NAME', 'contributor']);
                 if (!name) name = 'N/A';
                 
-                let reason = getVal(row, ['Reason', 'REASON', 'reason', 'Purpose']);
+                let reason = getVal(row, ['Reason', 'REASON', 'reason', 'Purpose']) || 'N/A';
                 let month = getVal(row, ['Date/Month', 'Month', 'MONTH', 'month']) || 'N/A';
                 let amtStr = getVal(row, ['Amount', 'AMOUNT', 'amount']);
                 let amt = parseAmount(amtStr);
@@ -360,8 +381,6 @@
                 let displayName = name;
                 if (currentTab === 'received' && contributorYTD[name] !== undefined) {
                     displayName = `${name} <span class="text-xs text-amber-700 font-normal">(YTD: ₹${contributorYTD[name].toLocaleString('en-IN')})</span>`;
-                } else if (currentTab === 'disbursed' && reason) {
-                    displayName = `${name} <span class="ml-1.5 inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-amber-100/80 text-amber-900 border border-amber-300/60">${reason}</span>`;
                 }
 
                 let statusColor = 'bg-emerald-50 text-emerald-800 border border-emerald-200';
@@ -382,13 +401,25 @@
 
                 let tr = document.createElement('tr');
                 tr.className = 'hover:bg-amber-50/50 transition';
-                tr.innerHTML = `
-                    <td class="p-4 text-slate-500 font-medium">${index + 1}</td>
-                    <td class="p-4 font-semibold text-emerald-950">${displayName}</td>
-                    <td class="p-4 text-slate-600 font-medium">${month}</td>
-                    <td class="p-4 font-bold text-slate-900">₹${amt.toLocaleString('en-IN')}</td>
-                    <td class="p-4"><span class="${statusColor} px-3 py-1 rounded-full text-xs font-bold">${statusText}</span></td>
-                `;
+
+                if (currentTab === 'received') {
+                    tr.innerHTML = `
+                        <td class="p-4 text-slate-500 font-medium">${index + 1}</td>
+                        <td class="p-4 font-semibold text-emerald-950">${displayName}</td>
+                        <td class="p-4 text-slate-600 font-medium">${month}</td>
+                        <td class="p-4 font-bold text-slate-900">₹${amt.toLocaleString('en-IN')}</td>
+                        <td class="p-4"><span class="${statusColor} px-3 py-1 rounded-full text-xs font-bold">${statusText}</span></td>
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td class="p-4 text-slate-500 font-medium">${index + 1}</td>
+                        <td class="p-4 font-semibold text-emerald-950">${displayName}</td>
+                        <td class="p-4"><span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-100/90 text-amber-900 border border-amber-300">${reason}</span></td>
+                        <td class="p-4 text-slate-600 font-medium">${month}</td>
+                        <td class="p-4 font-bold text-slate-900">₹${amt.toLocaleString('en-IN')}</td>
+                        <td class="p-4"><span class="${statusColor} px-3 py-1 rounded-full text-xs font-bold">${statusText}</span></td>
+                    `;
+                }
                 tbody.appendChild(tr);
             });
 
@@ -399,19 +430,16 @@
             currentTab = tab;
             let recBtn = document.getElementById('tab-received');
             let disBtn = document.getElementById('tab-disbursed');
-            let nameHeader = document.getElementById('nameHeader');
             let captionTitle = document.getElementById('table-caption-title');
 
             if(tab === 'received') {
                 recBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-emerald-900 text-amber-300 border border-amber-500/40 shadow-sm text-center";
                 disBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 text-center";
-                nameHeader.innerText = "Contributor Name";
                 captionTitle.innerText = "Contribution Records (Live from Google Sheet)";
                 renderTable(contributionsData);
             } else {
                 disBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-emerald-900 text-amber-300 border border-amber-500/40 shadow-sm text-center";
                 recBtn.className = "flex-1 px-4 py-2.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 text-center";
-                nameHeader.innerText = "Beneficiary & Reason";
                 captionTitle.innerText = "Disbursal Records (Live from Google Sheet)";
                 renderTable(disbursalsData);
             }
